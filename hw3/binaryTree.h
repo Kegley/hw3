@@ -23,9 +23,9 @@ public:
 		root->right = new Node;
 		root->right->data = 2;
 		root->left->left = new Node;
-		//root->left->right = new Node;
+		root->left->right = new Node;
 		root->left->left->data = 3;
-		//root->left->right->data = 4;
+		root->left->right->data = 4;
 		root->right->left = new Node;
 		root->right->left->data = 5;
 
@@ -55,35 +55,28 @@ public:
 			std::stack<Node*> s;
 			s.push(root);
 			Node * n = s.top();
-			int i = 0;
+			bool goRight = false;
 			while (!s.empty()){
-				
-				while (n->left != NULL){
+
+				while (n->left != NULL && !goRight){
 					if (s.empty()) { break; }
-					//std::cout << "GOING LEFT" << std::endl;
 					n = n->left;
 					s.push(n);
 				}
 
-				if (!s.empty()){ s.pop(); }
-				
 				std::cout << n->data;
-				if (!s.empty()){
-					n = s.top();
-				}
-				std::cout << n->data;
-
-				if (!s.empty()){ s.pop(); }
+				s.pop();
 
 				if (n->right != NULL){
-					//std::cout << "GOING RIGHT" << std::endl;
-					n = n->right;
-					s.push(n);
+					s.push(n->right);
+					n = s.top();
+					goRight = false;
 				}
-
-				i++;
+				else{
+					if (!s.empty()){ n = s.top(); }
+					goRight = true;
+				}
 			}
-
 		}
 	}
 
